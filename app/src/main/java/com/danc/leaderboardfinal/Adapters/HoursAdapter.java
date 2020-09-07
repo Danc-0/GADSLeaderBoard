@@ -78,7 +78,7 @@ public class HoursAdapter extends RecyclerView.Adapter<HoursAdapter.MyHourViewHo
         public void Bind(LearningHours learningHours){
             txtName.setText(learningHours.getName());
             txtHours.setText(learningHours.getTime());
-            txtCountry.setText(learningHours.getCountry());
+            txtCountry.setText(learningHours.getCountry() + ".");
         }
     }
 }

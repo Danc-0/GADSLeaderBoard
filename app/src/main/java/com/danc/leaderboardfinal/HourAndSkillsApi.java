@@ -15,4 +15,6 @@ public interface HourAndSkillsApi {
 
     @GET("api/skilliq")
     Call<List<SkillIQ>> getSkill();
+
+
 }

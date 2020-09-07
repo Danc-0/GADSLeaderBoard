@@ -76,7 +76,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<SkillsAdapter.MySkillVie
         public void Bind(SkillIQ skillIQ){
             txtName.setText(skillIQ.getName());
             txtScore.setText(skillIQ.getScore());
-            txtCountry.setText(skillIQ.getCountry());
+            txtCountry.setText(skillIQ.getCountry() + ".");
         }
     }
 }
