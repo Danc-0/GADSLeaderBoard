@@ -1,13 +1,46 @@
 package com.danc.leaderboardfinal;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class SubmissionActivity extends AppCompatActivity {
+import com.danc.leaderboardfinal.AlertDialog.ErrorDialog;
+import com.danc.leaderboardfinal.AlertDialog.SubmitDialog;
+import com.danc.leaderboardfinal.AlertDialog.SuccessDialog;
+import com.danc.leaderboardfinal.Model.SubmitModel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class SubmissionActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = "SubmissionActivity";
+    EditText etFirstName, etLastName, etEmailAddress, etGithubLink;
+    Button Submit;
+    HourAndSkillsApi hourAndSkillsApi;
+    Retrofit retrofit;
+    TextView textView;
+
+    private boolean mIsConfirmed = false;
+
+    Dialog successDialog, failedDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +57,104 @@ public class SubmissionActivity extends AppCompatActivity {
             }
         });
 
+        etFirstName = findViewById(R.id.firstName);
+        etLastName = findViewById(R.id.lastName);
+        etEmailAddress = findViewById(R.id.emailAddress);
+        etGithubLink = findViewById(R.id.etGit_link);
+        Submit = findViewById(R.id.btnSubmit);
+        Submit.setOnClickListener(this);
+
+        successDialog = new Dialog(this);
+        failedDialog = new Dialog(this);
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor).build();
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://docs.google.com/forms/d/e/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(okHttpClient)
+                .build();
+
+        hourAndSkillsApi = retrofit.create(HourAndSkillsApi.class);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnSubmit:
+                String firstName = etFirstName.getText().toString();
+                String lastName = etLastName.getText().toString();
+                String emailAddress = etEmailAddress.getText().toString();
+                String githubLink = etGithubLink.getText().toString();
+
+                if (firstName.isEmpty() || lastName.isEmpty() || emailAddress.isEmpty() || githubLink.isEmpty()) {
+                    Toast.makeText(this, "Fill out all the fields", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Great", Toast.LENGTH_SHORT).show();
+                    openSubmitDialog();
+                }
+                break;
+        }
+    }
+
+    public void createPostRequest() {
+        String firstName = etFirstName.getText().toString();
+        String lastName = etLastName.getText().toString();
+        String emailAddress = etEmailAddress.getText().toString();
+        String githubLink = etGithubLink.getText().toString();
+
+        if (firstName.isEmpty() || lastName.isEmpty() || emailAddress.isEmpty() || githubLink.isEmpty()){
+            Toast.makeText(this, "Fill out all the fields", Toast.LENGTH_SHORT).show();
+        }
+
+        Call<Void> submitModelCall = hourAndSkillsApi.createPost(emailAddress, firstName, lastName, githubLink);
+        submitModelCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    openErrorDialog();
+                    return;
+                }
+                Toast.makeText(SubmissionActivity.this, "Message Sent Successful " + response.code(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onResponse: Coded Message " + response.code());
+                openSuccessDialog();
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                openErrorDialog();
+                Log.d(TAG, "onFailure: Failed to Upload " + t.getMessage());
+
+            }
+        });
+    }
+
+    private void openSubmitDialog() {
+        SubmitDialog confirmDialog = new SubmitDialog();
+        confirmDialog.show(getSupportFragmentManager(), "Confirm");
+    }
+
+    private void openErrorDialog() {
+        ErrorDialog errorDialog = new ErrorDialog();
+        errorDialog.show(getSupportFragmentManager(), "Error");
+    }
+
+    private void openSuccessDialog() {
+        SuccessDialog successDialog = new SuccessDialog();
+        successDialog.show(getSupportFragmentManager(), "Success");
+    }
+
+    public static void isEmpty(String string){
+        string.equals("");
     }
 }

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.danc.leaderboardfinal.HourAndSkillsApi;
 import com.danc.leaderboardfinal.Model.LearningHours;
 import com.danc.leaderboardfinal.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,7 @@ public class HoursAdapter extends RecyclerView.Adapter<HoursAdapter.MyHourViewHo
     public void onBindViewHolder(@NonNull MyHourViewHolder holder, int position) {
         LearningHours learningHours1 = learningHours.get(position);
         holder.Bind(learningHours1);
+        Picasso.get().load(learningHours1.getImageUrl()).into(holder.hoursImageBadge);
     }
 
     @Override

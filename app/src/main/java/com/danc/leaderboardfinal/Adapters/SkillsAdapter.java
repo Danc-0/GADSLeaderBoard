@@ -15,6 +15,7 @@ import com.danc.leaderboardfinal.HourAndSkillsApi;
 import com.danc.leaderboardfinal.Model.LearningHours;
 import com.danc.leaderboardfinal.Model.SkillIQ;
 import com.danc.leaderboardfinal.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<SkillsAdapter.MySkillVie
     public void onBindViewHolder(@NonNull MySkillViewHolder holder, int position) {
         SkillIQ skillIQ = skillIQS1.get(position);
         holder.Bind(skillIQ);
+        Picasso.get().load(skillIQ.getImageUrl()).into(holder.hoursImageBadge);
     }
 
     @Override
