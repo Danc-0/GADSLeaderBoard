@@ -126,6 +126,7 @@ public class SubmissionActivity extends AppCompatActivity implements View.OnClic
                 }
                 Toast.makeText(SubmissionActivity.this, "Message Sent Successful " + response.code(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onResponse: Coded Message " + response.code());
+                clear();
                 openSuccessDialog();
 
             }
@@ -161,8 +162,15 @@ public class SubmissionActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void confirmSubmission(boolean isConfirmed) {
         mIsConfirmed = isConfirmed;
-        Log.d("Confirm", mIsConfirmed + "From Interface");
+        Log.d("Confirm", mIsConfirmed + "Interface");
         if (mIsConfirmed)
             createPostRequest();
+    }
+
+    public void clear(){
+        etFirstName.setText("");
+        etLastName.setText("");
+        etEmailAddress.setText("");
+        etGithubLink.setText("");
     }
 }

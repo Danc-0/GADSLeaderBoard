@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.danc.leaderboardfinal.Adapters.HoursAdapter;
 import com.danc.leaderboardfinal.HourAndSkillsApi;
@@ -36,6 +38,8 @@ public class FragmentHours extends Fragment {
     HoursAdapter adapter;
     HourAndSkillsApi hourAndSkillsApi;
     RecyclerView recyclerViewHours;
+
+    ProgressBar progressBar;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,6 +87,8 @@ public class FragmentHours extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_hours, container, false);
+        progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         recyclerViewHours = view.findViewById(R.id.recycler_view_hours);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         adapter = new HoursAdapter();
@@ -111,6 +117,7 @@ public class FragmentHours extends Fragment {
                 List<LearningHours> hours = response.body();
                 adapter.setData(hours);
                 recyclerViewHours.setAdapter(adapter);
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override

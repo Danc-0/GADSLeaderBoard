@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.danc.leaderboardfinal.ViewPagerFragments.FragmentHours;
 import com.danc.leaderboardfinal.ViewPagerFragments.FragmentSkills;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ViewPager viewPager;
     TabLayout tabLayout;
     Button btnToSubmit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fragmentPagerAdapter.addFragment(FragmentSkills.newInstance(), "Skill IQ Leaders");
                 viewPager.setAdapter(fragmentPagerAdapter);
                 tabLayout.setupWithViewPager(viewPager);
+
             }
         });
     }

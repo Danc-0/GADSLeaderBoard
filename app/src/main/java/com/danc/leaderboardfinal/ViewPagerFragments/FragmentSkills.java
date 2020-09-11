@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.danc.leaderboardfinal.Adapters.SkillsAdapter;
 import com.danc.leaderboardfinal.HourAndSkillsApi;
@@ -35,6 +36,8 @@ public class FragmentSkills extends Fragment {
     Retrofit retrofit;
     RecyclerView recyclerViewSkills;
     HourAndSkillsApi hourAndSkillsApi;
+
+    ProgressBar progressBar;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,6 +84,8 @@ public class FragmentSkills extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_skills, container, false);
+        progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://gadsapi.herokuapp.com/")
@@ -110,14 +115,8 @@ public class FragmentSkills extends Fragment {
                 List<SkillIQ> list = response.body();
                 adapter.setData(list);
                 recyclerViewSkills.setAdapter(adapter);
+                progressBar.setVisibility(View.GONE);
 
-//                for (SkillIQ skillIQ: list){
-//                    String content = "";
-//                    content += "Name: " + skillIQ.getName();
-//                    content += "Score: " + skillIQ.getScore();
-//                    content += "Country: " + skillIQ.getCountry();
-//                    content += "ImageUrl: " + skillIQ.getImageUrl();
-//                }
             }
 
             @Override
