@@ -98,11 +98,10 @@ public class SubmissionActivity extends AppCompatActivity implements View.OnClic
 
 
                 if (firstName.isEmpty() || lastName.isEmpty() || emailAddress.isEmpty() || githubLink.isEmpty()) {
-//                    Toast.makeText(this, "Fill out all the fields", Toast.LENGTH_SHORT).show();
-                    openErrorDialog();
+                    Toast.makeText(this, "Fill out all the fields", Toast.LENGTH_SHORT).show();
+
                 } else {
-//                    openSubmitDialog();
-//                    openErrorDialog();
+                    openSubmitDialog();
                 }
                 break;
         }
