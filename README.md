@@ -28,3 +28,9 @@ Project practise for the GADs 2020 Phase Two Challenge.
 5. Picasso 
 
 ### SCREENSHOTS
+![](images/SplashScreen.png)
+![](images/learnerboard.png)![](images/skilliqboard.png)
+![](images/submitpage.png)
+![](images/confirmDialog.png)
+![](images/SuccessDialog.png)
+![](images/ErrorDialog.png)
