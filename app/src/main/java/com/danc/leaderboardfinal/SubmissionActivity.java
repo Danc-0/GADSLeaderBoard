@@ -96,11 +96,13 @@ public class SubmissionActivity extends AppCompatActivity implements View.OnClic
                 String emailAddress = etEmailAddress.getText().toString();
                 String githubLink = etGithubLink.getText().toString();
 
+
                 if (firstName.isEmpty() || lastName.isEmpty() || emailAddress.isEmpty() || githubLink.isEmpty()) {
-                    Toast.makeText(this, "Fill out all the fields", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Fill out all the fields", Toast.LENGTH_SHORT).show();
+                    openErrorDialog();
                 } else {
-                    Toast.makeText(this, "Great", Toast.LENGTH_SHORT).show();
-                    openSubmitDialog();
+//                    openSubmitDialog();
+//                    openErrorDialog();
                 }
                 break;
         }
@@ -120,11 +122,10 @@ public class SubmissionActivity extends AppCompatActivity implements View.OnClic
         submitModelCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if (!response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     openErrorDialog();
                     return;
                 }
-                Toast.makeText(SubmissionActivity.this, "Message Sent Successful " + response.code(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onResponse: Coded Message " + response.code());
                 clear();
                 openSuccessDialog();
