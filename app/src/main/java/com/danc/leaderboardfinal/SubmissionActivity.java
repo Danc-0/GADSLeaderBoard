@@ -29,7 +29,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SubmissionActivity extends AppCompatActivity implements View.OnClickListener {
+public class SubmissionActivity extends AppCompatActivity implements View.OnClickListener, SubmitDialog.ConfirmDialogListener {
 
     private static final String TAG = "SubmissionActivity";
     EditText etFirstName, etLastName, etEmailAddress, etGithubLink;
@@ -156,5 +156,13 @@ public class SubmissionActivity extends AppCompatActivity implements View.OnClic
 
     public static void isEmpty(String string){
         string.equals("");
+    }
+
+    @Override
+    public void confirmSubmission(boolean isConfirmed) {
+        mIsConfirmed = isConfirmed;
+        Log.d("Confirm", mIsConfirmed + "From Interface");
+        if (mIsConfirmed)
+            createPostRequest();
     }
 }

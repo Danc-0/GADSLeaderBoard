@@ -42,6 +42,7 @@ public class ErrorDialog extends DialogFragment {
             public void run() {
                 try {
                     sleep(2 * 1000);
+                    dismiss();
                 }
                 catch (Exception e){
                     Log.d(TAG, "run: Failed Error" + e.getMessage());
